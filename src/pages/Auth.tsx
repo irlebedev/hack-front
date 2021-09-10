@@ -1,9 +1,23 @@
-import { Box, Button, Container as MuiContainer } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container as MuiContainer,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/system";
+import { Formik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { getIsAuthorized, login } from "../redux/authSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { login } from "../redux/authSlice";
+import { useAppDispatch } from "../redux/hooks";
+import * as Yup from "yup";
+
+const Wrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -14,7 +28,6 @@ const Container = styled(MuiContainer)`
 `;
 
 export const Auth: React.FC = () => {
-  const isAuthorized = useAppSelector(getIsAuthorized);
   const dispatch = useAppDispatch();
   const history = useHistory();
   const onLoginHandler = () => {
@@ -22,11 +35,85 @@ export const Auth: React.FC = () => {
     history.push("/main");
   };
   return (
-    <Container sx={{ height: "100vh" }}>
-      <Box>{isAuthorized ? "authorized" : "not authorized"}</Box>
-      <Button variant="contained" onClick={onLoginHandler}>
-        login
-      </Button>
-    </Container>
+    <Wrapper>
+      <Container maxWidth="sm">
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email("Must be a valid email")
+              .max(255)
+              .required("Email is required"),
+            password: Yup.string().max(255).required("Password is required"),
+          })}
+          onSubmit={onLoginHandler}
+        >
+          {({
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <Box sx={{ mb: 3 }}>
+                <Typography color="textPrimary" variant="h2">
+                  Авторизация
+                </Typography>
+              </Box>
+              <TextField
+                error={Boolean(touched.email && errors.email)}
+                fullWidth
+                helperText={touched.email && errors.email}
+                label="Email Address"
+                margin="normal"
+                name="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="email"
+                value={values.email}
+                variant="outlined"
+                sx={{
+                  minHeight: "80px",
+                }}
+              />
+              <TextField
+                error={Boolean(touched.password && errors.password)}
+                fullWidth
+                helperText={touched.password && errors.password}
+                label="Password"
+                margin="normal"
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="password"
+                value={values.password}
+                variant="outlined"
+                sx={{
+                  minHeight: "80px",
+                }}
+              />
+              <Box sx={{ py: 2 }}>
+                <Button
+                  color="primary"
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                >
+                  Войти
+                </Button>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </Container>
+    </Wrapper>
   );
 };
