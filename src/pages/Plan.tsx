@@ -23,6 +23,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 // import Select, { SelectChangeEvent } from '@mui/material/Select';
 import * as Yup from "yup";
+// import { useAppDispatch, useAppSelector } from "../redux/hooks";
+// import { getData, setData } from "../redux/planSlice";
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -53,7 +55,6 @@ const Aside = styled(Box)`
 interface FormData {
   dateStart: number | null;
   dateEnd: number | null;
-  // supervisor: { id: number; name: string } | null;
   supervisor: number | null;
 }
 
@@ -88,7 +89,11 @@ export const Plan: React.FC = () => {
             initialValues={initialFormValues}
             validationSchema={validationSchema}
             onSubmit={(values) => {
-              console.log("values", values);
+              const filtered = Object.fromEntries(
+                Object.entries(values).filter(([_, value]) => value !== null)
+              );
+
+              console.log("values", filtered);
             }}
           >
             {({
@@ -145,35 +150,6 @@ export const Plan: React.FC = () => {
                     />
                   </Box>
                 </LocalizationProvider>
-                {/* <FormControl fullWidth>
-                  <InputLabel id="supervizor">Руководитель</InputLabel>
-                  <Select
-                    label="Руководитель"
-                    labelId="supervizor"
-                    id="supervizor"
-                    // name="supervizor"
-                    value={values.supervisor?.name || "Руководитель не выбран"}
-                    // inputProps={{
-                    //   id: String(values.supervisor?.id),
-                    //   name: values.supervisor?.name,
-                    // }}
-                    onChange={
-                      // (e) =>
-                      // setFieldValue("supervisor", {
-                      //   id: e.target.value,
-                      //   name: e.target.name,
-                      // })
-                      handleChange
-                    }
-                    fullWidth
-                  >
-                    {supervizors.map((supervizor) => (
-                      <MenuItem key={supervizor.id} value={supervizor.id}>
-                        {supervizor.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl> */}
 
                 <FormControl fullWidth>
                   <InputLabel id="supervizor">Руководитель</InputLabel>
@@ -186,7 +162,7 @@ export const Plan: React.FC = () => {
                         <Select
                           label="Руководитель"
                           name={name}
-                          value={value}
+                          value={value ?? ""}
                           onChange={(e) => {
                             setFieldValue(name, e.target.value);
                           }}
