@@ -6,11 +6,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 
-interface iDialogLogOutProps {
-  title: string,
+interface IModalCreateProps {
   isActive: boolean,
   toggleModal: () => void
-  handlerConfirm: () => void
 }
 
 const Transition = forwardRef(function Transition(
@@ -23,8 +21,8 @@ const Transition = forwardRef(function Transition(
 });
 
 
-export const DialogLogOut: FC<iDialogLogOutProps> = (
-  { title, isActive, toggleModal, handlerConfirm }: iDialogLogOutProps
+export const ModalCreateIDP: FC<IModalCreateProps> = (
+  { isActive, toggleModal }: IModalCreateProps
 ) => {
 
   return (
@@ -37,14 +35,11 @@ export const DialogLogOut: FC<iDialogLogOutProps> = (
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="responsive-dialog-title">
-          {title}
+          На текущий момент ИПР уже создан
         </DialogTitle>
         <DialogActions>
           <Button autoFocus onClick={toggleModal}>
-            Нет
-          </Button>
-          <Button onClick={handlerConfirm} autoFocus>
-            Да
+            Закрыть
           </Button>
         </DialogActions>
       </Dialog>

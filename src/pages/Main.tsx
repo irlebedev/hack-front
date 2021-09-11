@@ -1,15 +1,15 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Box, Button, Container as MuiContainer, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import { useHistory } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
 import { getIsAuthorized, logout } from "../redux/authSlice";
+import { activeCard, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Cards } from "../components/Cards";
 import { DialogLogOut } from "../components/DialogLogOut";
-import { createMockCards, ICard } from "../api";
-
+import { ModalCreateIDP } from "../components/ModalCreateIDP";
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -19,14 +19,29 @@ const Container = styled(MuiContainer)`
 `;
 
 export const Main: FC = () => {
-  const isAuthorized = useAppSelector(getIsAuthorized);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const [isModalLogOut, setModalLogOut] = useState<boolean>(false);
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
 
-  const onCreateHandler = () => {
-    history.push(AppRoutes.PLAN);
+  const isAuthorized = useAppSelector(getIsAuthorized);
+  const activeCardData = useAppSelector(activeCard);
+  const completedСardsData = useAppSelector(completedСards);
+
+  const [isModalLogOut, setModalLogOut] = useState<boolean>(false);
+  const [isModalCreateIDP, setModalCreateIDP] = useState<boolean>(false);
+  const [isModalDeleteIDP, setModalDeleteIDP] = useState<boolean>(false);
+
+
+  const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
+  const toggleModalCreateIDP = () => setModalCreateIDP(!isModalCreateIDP);
+  const toggleModalDeleteIDP = () => setModalDeleteIDP(!isModalDeleteIDP);
+
+  const handleDeleteCard = () => {
+    toggleModalDeleteIDP();
+    dispatch(deleteActiveCard());
   };
 
   const onLogoutHandler = () => {
@@ -34,11 +49,13 @@ export const Main: FC = () => {
     history.push(AppRoutes.AUTH);
   };
 
-  const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
+  const onCreateHandler = () => {
+    if (!activeCard) {
+      history.push(AppRoutes.PLAN);
+    };
 
-
-  const mockActiveCard: ICard[] = createMockCards(1);
-  const mockCards: ICard[] = createMockCards(6, true);
+    toggleModalCreateIDP();
+  };
 
   return (
     <Container>
@@ -54,7 +71,10 @@ export const Main: FC = () => {
         <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
           Активный ИПР:
         </Typography>
-        <Cards data={mockActiveCard} />
+        <Cards
+          data={activeCardData}
+          toggleModalDeleteIDP={toggleModalDeleteIDP}
+        />
       </Box>
 
       <Box>
@@ -62,7 +82,7 @@ export const Main: FC = () => {
           Завершенные ИПР:
         </Typography>
         <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", }}>
-          <Cards data={mockCards} />
+          <Cards data={completedСardsData} />
         </Box>
       </Box>
 
@@ -82,11 +102,29 @@ export const Main: FC = () => {
           </Grid>
         </Grid>
       </Box>
+
       {isModalLogOut &&
         <DialogLogOut
+          title="Вы действительно хотите выйти из системы?"
           isActive={isModalLogOut}
-          toggleModalLogOut={toggleModalLogOut}
-          onLogoutHandler={onLogoutHandler}
+          toggleModal={toggleModalLogOut}
+          handlerConfirm={onLogoutHandler}
+        />
+      }
+
+      {isModalCreateIDP &&
+        <ModalCreateIDP
+          isActive={isModalCreateIDP}
+          toggleModal={toggleModalCreateIDP}
+        />
+      }
+
+      {isModalDeleteIDP &&
+        <DialogLogOut
+          title="Вы действительно хотите удалить ИПР?"
+          isActive={isModalDeleteIDP}
+          toggleModal={toggleModalDeleteIDP}
+          handlerConfirm={handleDeleteCard}
         />
       }
     </Container>

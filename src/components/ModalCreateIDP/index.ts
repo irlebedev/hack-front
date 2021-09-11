@@ -1,0 +1,1 @@
+export { ModalCreateIDP } from "./ModalCreateIDP";

@@ -7,20 +7,25 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Chip } from "@mui/material";
-import { ICard, statusCards } from "../../api";
+import { ICard } from "../../api";
 
 interface ICardsProps {
   data: ICard[],
+  toggleModalDeleteIDP?: () => void
 }
 
-export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
+export const Cards: FC<ICardsProps> = (
+  { data, toggleModalDeleteIDP }: ICardsProps
+) => {
 
   const history = useHistory();
   const onEditHandler = () => history.push(`/edit/22`);
 
   const renderCards =
-    data.map(({ title, descr, dateEnd, status }: ICard): JSX.Element => (
-      <Box sx={{ width: "22rem" }}>
+    data.map((
+      { title, descr, dateEnd, status }: ICard, index: number
+    ): JSX.Element => (
+      <Box sx={{ width: "22rem" }} key={index}>
         <Card variant="outlined">
           <CardContent>
             <Typography
@@ -52,6 +57,12 @@ export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
                 onClick={onEditHandler}
               >
                 Редактировать
+              </Button>
+              <Button
+                size="small"
+                onClick={toggleModalDeleteIDP}
+              >
+                Удалить
               </Button>
             </CardActions>
           }
