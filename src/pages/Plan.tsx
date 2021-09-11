@@ -14,16 +14,13 @@ const Container = styled(MuiContainer)`
   flex-direction: column;
 `;
 
-export const Main: React.FC = () => {
+export const Plan: React.FC = () => {
   const isAuthorized = useAppSelector(getIsAuthorized);
   const dispatch = useAppDispatch();
   const history = useHistory();
   const onLogoutHandler = () => {
     dispatch(logout());
     history.push(AppRoutes.AUTH);
-  };
-  const onCreateHandler = () => {
-    history.push(AppRoutes.PLAN);
   };
   return (
     <Container>
@@ -34,11 +31,7 @@ export const Main: React.FC = () => {
             Выйти
           </Button>
         </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={onCreateHandler}>
-            Создать
-          </Button>
-        </Grid>
+        <Grid item>Plan</Grid>
       </Grid>
     </Container>
   );

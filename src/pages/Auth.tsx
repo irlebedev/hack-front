@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { login } from "../redux/authSlice";
 import { useAppDispatch } from "../redux/hooks";
 import * as Yup from "yup";
+import { AppRoutes } from "../App";
 
 const Wrapper = styled(Box)`
   display: flex;
@@ -32,7 +33,7 @@ export const Auth: React.FC = () => {
   const history = useHistory();
   const onLoginHandler = () => {
     dispatch(login());
-    history.push("/main");
+    history.push(AppRoutes.MAIN);
   };
   return (
     <Wrapper>
