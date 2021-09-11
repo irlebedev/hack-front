@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container as MuiContainer,
-  Grid,
   Paper,
   TextField,
   Typography,
@@ -10,32 +9,41 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Card,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { Field, Formik } from "formik";
 import React from "react";
-// import { useHistory } from "react-router-dom";
-// import { AppRoutes } from "../App";
-// import { getIsAuthorized, logout } from "../redux/authSlice";
-// import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-// import Select, { SelectChangeEvent } from '@mui/material/Select';
-import * as Yup from "yup";
-// import { useAppDispatch, useAppSelector } from "../redux/hooks";
-// import { getData, setData } from "../redux/planSlice";
+import AddIcon from "@mui/icons-material/Add";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import {
+  addGoal,
+  getEndDate,
+  getGoals,
+  getStartDate,
+  getSupervizorId,
+  setEndDate,
+  setGoals,
+  setStartDate,
+  setSupervizorId,
+} from "../redux/planSlice";
 
 const Container = styled(MuiContainer)`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 64px;
+  padding-bottom: 20px;
 `;
 
 const Content = styled(Paper)`
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   padding: 64px;
 `;
@@ -52,28 +60,25 @@ const Aside = styled(Box)`
   background-color: #1976d2;
 `;
 
-interface FormData {
-  dateStart: number | null;
-  dateEnd: number | null;
-  supervisor: number | null;
-}
-
-const validationSchema = Yup.object().shape({
-  dateStart: Yup.number().required("Дата начала обязательна"),
-  dateEnd: Yup.number().required("Дата окончания обязательна"),
-});
-
 const supervizors = [
   { id: 1, name: "Janetta Letty" },
   { id: 2, name: "Edwyna Lizbeth" },
 ];
 
+const priorities = ["Low", "Medium", "High", "Super High"];
+
 export const Plan: React.FC = () => {
-  const initialFormValues: FormData = {
-    dateStart: Date.now(),
-    dateEnd: null,
-    supervisor: null,
+  const dispatch = useAppDispatch();
+  const startDate = useAppSelector(getStartDate);
+  const endDate = useAppSelector(getEndDate);
+  const supervizorId = useAppSelector(getSupervizorId);
+  const goals = useAppSelector(getGoals);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ startDate, endDate, supervizorId });
   };
+
   return (
     <Container>
       <Header>Header</Header>
@@ -81,122 +86,178 @@ export const Plan: React.FC = () => {
         <Aside>aside</Aside>
         <Content elevation={3}>
           <Box sx={{ mb: 3 }}>
-            <Typography color="textPrimary" variant="h4">
-              ИЗП
+            <Typography color="textPrimary" variant="h6">
+              ИПР
             </Typography>
           </Box>
-          <Formik
-            initialValues={initialFormValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              const filtered = Object.fromEntries(
-                Object.entries(values).filter(([_, value]) => value !== null)
-              );
-
-              console.log("values", filtered);
-            }}
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
           >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values,
-              setFieldValue,
-              dirty,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                {console.log(errors)}
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Box sx={{ display: "flex", gap: "24px", width: "100%" }}>
-                    <DatePicker
-                      label="Дата начала"
-                      value={values.dateStart}
-                      onChange={(value) =>
-                        setFieldValue("dateStart", value?.valueOf())
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          error={Boolean(touched.dateStart && errors.dateStart)}
-                          helperText={touched.dateStart && errors.dateStart}
-                          sx={{
-                            minHeight: "80px",
-                            flexGrow: 1,
-                          }}
-                        />
-                      )}
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Box sx={{ display: "flex", gap: "24px", width: "100%" }}>
+                <DatePicker
+                  label="Дата начала"
+                  value={startDate}
+                  onChange={(newValue) => {
+                    dispatch(setStartDate(newValue?.valueOf() ?? null));
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{
+                        minHeight: "80px",
+                        flexGrow: 1,
+                      }}
                     />
-                    <DatePicker
-                      label="Дата окончания"
-                      value={values.dateEnd}
-                      onChange={(value) =>
-                        setFieldValue("dateEnd", value?.valueOf())
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          value={values.dateEnd}
-                          error={Boolean(touched.dateEnd && errors.dateEnd)}
-                          helperText={touched.dateEnd && errors.dateEnd}
-                          sx={{
-                            minHeight: "80px",
-                            flexGrow: 1,
-                          }}
-                        />
-                      )}
+                  )}
+                />
+                <DatePicker
+                  label="Дата окончания"
+                  value={endDate}
+                  onChange={(newValue) => {
+                    dispatch(setEndDate(newValue?.valueOf() ?? null));
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{
+                        minHeight: "80px",
+                        flexGrow: 1,
+                      }}
                     />
-                  </Box>
-                </LocalizationProvider>
+                  )}
+                />
+              </Box>
+            </LocalizationProvider>
 
-                <FormControl fullWidth>
-                  <InputLabel id="supervizor">Руководитель</InputLabel>
-                  <Field
-                    name="supervizor"
-                    component={({ children, form, field }: any) => {
-                      const { name, value } = field;
-                      const { setFieldValue } = form;
-                      return (
-                        <Select
-                          label="Руководитель"
-                          name={name}
-                          value={value ?? ""}
-                          onChange={(e) => {
-                            setFieldValue(name, e.target.value);
-                          }}
-                        >
-                          {children}
-                        </Select>
+            <FormControl fullWidth sx={{ marginBottom: "20px" }}>
+              <InputLabel id="supervizor">Руководитель</InputLabel>
+              <Select
+                labelId="supervizor"
+                value={supervizorId ?? ""}
+                label="Руководитель"
+                onChange={(e) => {
+                  dispatch(setSupervizorId(Number(e.target.value)));
+                }}
+              >
+                {supervizors.map((supervizor) => (
+                  <MenuItem key={supervizor.id} value={supervizor.id}>
+                    {supervizor.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Typography
+              color="textPrimary"
+              variant="h6"
+              sx={{ marginBottom: "20px" }}
+            >
+              Список целей
+            </Typography>
+
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {goals.map((goal, i) => (
+                <Card
+                  key={i}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    py: 4,
+                    px: 2,
+                    boxShadow: 4,
+                  }}
+                >
+                  <Box sx={{ display: "flex", gap: "24px", width: "100%" }}>
+                    <TextField
+                      label="Цель"
+                      multiline
+                      fullWidth
+                      value={goal.name}
+                      onChange={(e) => {
+                        dispatch(
+                          setGoals({
+                            key: "name",
+                            id: i,
+                            value: e.target.value,
+                          })
+                        );
+                      }}
+                    />
+                    <FormControl fullWidth sx={{ marginBottom: "20px" }}>
+                      <InputLabel id="supervizor">Приоритет</InputLabel>
+                      <Select
+                        labelId="supervizor"
+                        value={goal.priority}
+                        label="Приоритет"
+                        onChange={(e) => {
+                          dispatch(
+                            setGoals({
+                              key: "priority",
+                              id: i,
+                              value: e.target.value as string,
+                            })
+                          );
+                        }}
+                      >
+                        {priorities.map((priority) => (
+                          <MenuItem key={priority} value={priority}>
+                            {priority}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <TextField
+                    label="Описание"
+                    multiline
+                    fullWidth
+                    value={goal.description}
+                    onChange={(e) => {
+                      dispatch(
+                        setGoals({
+                          key: "description",
+                          id: i,
+                          value: e.target.value,
+                        })
                       );
                     }}
-                  >
-                    {supervizors.map((supervizor) => (
-                      <MenuItem key={supervizor.id} value={supervizor.id}>
-                        {supervizor.name}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                </FormControl>
+                  />
+                </Card>
+              ))}
 
-                <Box sx={{ py: 2 }}>
-                  <Button
-                    color="primary"
-                    // disabled={
-                    //   isSubmitting || !!Object.keys(errors).length || !dirty
-                    // }
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Отправить на согласование
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
+              <Box
+                sx={{
+                  width: "fitContent",
+                }}
+              >
+                <Button
+                  color="primary"
+                  size="large"
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                  onClick={() => {
+                    dispatch(addGoal());
+                  }}
+                >
+                  Добавить цель
+                </Button>
+              </Box>
+            </Box>
+            <Box sx={{ py: 2 }}>
+              <Button
+                color="primary"
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+              >
+                Отправить на согласование
+              </Button>
+            </Box>
+          </form>
         </Content>
       </Box>
     </Container>
