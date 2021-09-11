@@ -1,12 +1,11 @@
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Auth } from "./pages/Auth";
-import { Plan } from "./pages/Plan";
-import { Main } from "./pages/Main";
+import { Auth, Plan, Main } from "./pages";
 
 export enum AppRoutes {
   MAIN = "/main",
   AUTH = "/auth",
   PLAN = "/plan",
+  EDIT_IPR = "/edit/:id"
 }
 
 export const App: React.FC = () => {
@@ -15,6 +14,7 @@ export const App: React.FC = () => {
       <Route exact path={AppRoutes.MAIN} component={Main} />
       <Route exact path={AppRoutes.AUTH} component={Auth} />
       <Route exact path={AppRoutes.PLAN} component={Plan} />
+      <Route exact path={AppRoutes.EDIT_IPR} component={Plan} />
       <Redirect to={AppRoutes.AUTH} />
     </Switch>
   );

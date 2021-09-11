@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { Formik } from "formik";
-import React from "react";
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import { login } from "../redux/authSlice";
 import { useAppDispatch } from "../redux/hooks";
@@ -28,7 +28,7 @@ const Container = styled(MuiContainer)`
   flex-direction: column;
 `;
 
-export const Auth: React.FC = () => {
+export const Auth: FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const onLoginHandler = () => {

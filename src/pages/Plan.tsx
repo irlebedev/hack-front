@@ -1,6 +1,6 @@
 import { Box, Button, Container as MuiContainer, Grid } from "@mui/material";
 import { styled } from "@mui/system";
-import React from "react";
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import { AppRoutes } from "../App";
 import { getIsAuthorized, logout } from "../redux/authSlice";
@@ -14,7 +14,7 @@ const Container = styled(MuiContainer)`
   flex-direction: column;
 `;
 
-export const Plan: React.FC = () => {
+export const Plan: FC = () => {
   const isAuthorized = useAppSelector(getIsAuthorized);
   const dispatch = useAppDispatch();
   const history = useHistory();
