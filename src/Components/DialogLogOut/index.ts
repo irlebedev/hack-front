@@ -1,1 +1,1 @@
-export { DialogLogOut } from './DialogLogOut';
+export { DialogLogOut } from "./DialogLogOut";

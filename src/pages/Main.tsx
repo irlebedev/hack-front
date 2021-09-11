@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Box, Button, Container as MuiContainer, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import { useHistory } from "react-router-dom";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
 import { getIsAuthorized, logout } from "../redux/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";

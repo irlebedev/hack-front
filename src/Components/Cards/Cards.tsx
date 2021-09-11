@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Chip } from '@mui/material';
-import { ICard, statusCards } from '../../api';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Chip } from "@mui/material";
+import { ICard, statusCards } from "../../api";
 
 interface ICardsProps {
   data: ICard[],
@@ -31,7 +31,7 @@ export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
               ИПР (индивидуальный план развития)
               <Chip
                 label={status === 2 ? "Завершено" : status === 1 ? "В процессе" : "Создано"}
-                color={status === 2 ? "success" : status === 1 ? "primary" : "info"}
+                color={status === 2 ? "success" : status === 1 ? "warning" : "info"}
                 size="small"
               />
             </Typography>
