@@ -13,16 +13,17 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: ({isAuthorized}) => {
-      isAuthorized = true;
+    login: (state) => {
+      state.isAuthorized = true;
     },
-    logout: ({isAuthorized}) => {
-      isAuthorized = false;
+    logout: (state) => {
+      state.isAuthorized = false;
     },
   },
 });
 
-export const getIsAuthorized = ({auth: {isAuthorized}}: RootState) => isAuthorized;
+export const getIsAuthorized = ({ auth: { isAuthorized } }: RootState) =>
+  isAuthorized;
 
 export const { login, logout } = authSlice.actions;
 
