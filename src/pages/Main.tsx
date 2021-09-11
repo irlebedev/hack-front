@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
 import { getIsAuthorized, logout } from "../redux/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Cards } from "../Components/Cards";
-import { DialogLogOut } from "../Components/DialogLogOut";
+import { Cards } from "../components/Cards";
+import { DialogLogOut } from "../components/DialogLogOut";
 import { createMockCards, ICard } from "../api";
 
 
