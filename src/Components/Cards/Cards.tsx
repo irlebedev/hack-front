@@ -36,14 +36,16 @@ export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
               {item.descr}
             </Typography>
           </CardContent>
-          <CardActions flex-direction="space-between">
-            <Button
-              size="small"
-              onClick={onEditHandler}
-            >
-              Редактировать
-            </Button>
-          </CardActions>
+          {item.status !== 2 &&
+            <CardActions flex-direction="space-between">
+              <Button
+                size="small"
+                onClick={onEditHandler}
+              >
+                Редактировать
+              </Button>
+            </CardActions>
+          }
         </Card>
       </Box >
     ));

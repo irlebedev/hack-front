@@ -11,6 +11,6 @@ export const createMockCards: (count: number, isActive?: boolean) => ICard[] =
             title: "Название ИПР",
             dateEnd: new Date().toLocaleString("ru", { month: 'numeric', day: "numeric" }),
             descr: "Описание ИПР",
-            status: isActive ? 1 : randomInteger(0, 2)
+            status: isActive ? 2 : randomInteger(0, 1)
           }
           ), []);
