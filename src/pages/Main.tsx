@@ -37,8 +37,8 @@ export const Main: FC = () => {
   const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
 
 
-  const mockActiveCard: ICard[] = createMockCards(1, true);
-  const mockCards: ICard[] = createMockCards(6);
+  const mockActiveCard: ICard[] = createMockCards(1);
+  const mockCards: ICard[] = createMockCards(6, true);
 
   return (
     <Container>
