@@ -34,7 +34,6 @@ export const Main: FC = () => {
   const [isModalCreateIDP, setModalCreateIDP] = useState<boolean>(false);
   const [isModalDeleteIDP, setModalDeleteIDP] = useState<boolean>(false);
 
-
   const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
   const toggleModalCreateIDP = () => setModalCreateIDP(!isModalCreateIDP);
   const toggleModalDeleteIDP = () => setModalDeleteIDP(!isModalDeleteIDP);
@@ -50,7 +49,7 @@ export const Main: FC = () => {
   };
 
   const onCreateHandler = () => {
-    if (!activeCard) {
+    if (activeCardData.length === 0) {
       history.push(AppRoutes.PLAN);
     };
 
@@ -67,15 +66,17 @@ export const Main: FC = () => {
         </Typography>
       </Box>
 
-      <Box>
-        <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-          Активный ИПР:
-        </Typography>
-        <Cards
-          data={activeCardData}
-          toggleModalDeleteIDP={toggleModalDeleteIDP}
-        />
-      </Box>
+      {!!activeCardData.length &&
+        <Box>
+          <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
+            Активный ИПР:
+          </Typography>
+          <Cards
+            data={activeCardData}
+            toggleModalDeleteIDP={toggleModalDeleteIDP}
+          />
+        </Box>
+      }
 
       <Box>
         <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
@@ -88,7 +89,6 @@ export const Main: FC = () => {
 
 
       <Box>
-        <Box>{isAuthorized ? "authorized" : "not authorized"}</Box>
         <Grid container spacing={2} justifyContent="flex-start" flex-direction="column" sx={{ mb: 3 }}>
           <Grid item>
             <Button variant="contained" onClick={onCreateHandler} size="large">

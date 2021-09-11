@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../redux/store";
 import { ICard, createMockCards } from './../api';
 
@@ -16,23 +16,19 @@ export const idpSlice = createSlice({
   name: "idp",
   initialState,
   reducers: {
-    getData: ({activeCard, completedСards}) => {
-      activeCard = createMockCards(1);
-      completedСards = createMockCards(6, true);
+    getData: (state) => {
+      state.activeCard = createMockCards(1);
+      state.completedСards = createMockCards(6, true);
     },
-    deleteActiveCard: ({activeCard}) => {
-      activeCard = [];
+    deleteActiveCard: (state) => {
+      state.activeCard = [];
     },
   },
 });
 
-export const activeCard = (
-  {idp: {activeCard}}: RootState
-) => activeCard;
+export const activeCard = (state: RootState) => state.idp.activeCard;
 
-export const completedСards = (
-  {idp: {completedСards}}: RootState
-) => completedСards;
+export const completedСards = (state: RootState) => state.idp.completedСards;
 
 export const { getData, deleteActiveCard } = idpSlice.actions;
 
