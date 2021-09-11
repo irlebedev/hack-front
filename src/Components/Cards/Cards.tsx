@@ -1,29 +1,32 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 //import { Chip } from '@mui/material';
-import { ICard } from '../../api';
+import { ICard } from "../../api";
 
 interface ICardsProps {
-  data: ICard[],
+  data: ICard[];
 }
 
 export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
-
   const history = useHistory();
   const onEditHandler = () => history.push(`/edit/22`);
 
-  const renderCards =
-    data.map((item: ICard): JSX.Element => (
+  const renderCards = data.map(
+    (item: ICard): JSX.Element => (
       <Box sx={{ width: 300 }}>
         <Card variant="outlined">
           <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
               ИПР (индивидуальный план развития)
             </Typography>
             <Typography variant="h5" component="div">
@@ -32,25 +35,17 @@ export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               Срок окончания: {item.dateEnd}
             </Typography>
-            <Typography variant="body2">
-              {item.descr}
-            </Typography>
+            <Typography variant="body2">{item.descr}</Typography>
           </CardContent>
           <CardActions flex-direction="space-between">
-            <Button
-              size="small"
-              onClick={onEditHandler}
-            >
+            <Button size="small" onClick={onEditHandler}>
               Редактировать
             </Button>
           </CardActions>
         </Card>
-      </Box >
-    ));
-
-  return (
-    <React.Fragment>
-      {renderCards}
-    </React.Fragment>
+      </Box>
+    )
   );
+
+  return <React.Fragment>{renderCards}</React.Fragment>;
 };

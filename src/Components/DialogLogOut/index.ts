@@ -1,1 +1,0 @@
-export { DialogLogOut } from './DialogLogOut';

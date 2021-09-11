@@ -1,31 +1,31 @@
-import React, { FC, forwardRef, ReactElement, Ref } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import React, { FC, forwardRef, ReactElement, Ref } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 
 interface iDialogLogOutProps {
-  isActive: boolean,
-  toggleModalLogOut: () => void
-  onLogoutHandler: () => void
+  isActive: boolean;
+  toggleModalLogOut: () => void;
+  onLogoutHandler: () => void;
 }
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children?: ReactElement<any, any>;
   },
-  ref: Ref<unknown>,
+  ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-export const DialogLogOut: FC<iDialogLogOutProps> = (
-  { isActive, toggleModalLogOut, onLogoutHandler }: iDialogLogOutProps
-) => {
-
+export const DialogLogOut: FC<iDialogLogOutProps> = ({
+  isActive,
+  toggleModalLogOut,
+  onLogoutHandler,
+}: iDialogLogOutProps) => {
   return (
     <div>
       <Dialog
@@ -49,6 +49,4 @@ export const DialogLogOut: FC<iDialogLogOutProps> = (
       </Dialog>
     </div>
   );
-}
-
-
+};
