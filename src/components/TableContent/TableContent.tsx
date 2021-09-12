@@ -8,7 +8,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { IEmployees } from "../../api";
 import { useAppDispatch } from "../../redux/hooks";
-import { setClientInfo } from "../../redux/adminSlice";
+import { setClientInfo } from "../../redux/idpSlice";
 
 interface ITableContent {
   item: IEmployees
@@ -22,13 +22,9 @@ export const TableContent: FC<ITableContent> = (
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    dispatch(setClientInfo({ id, customer }));
-  }, [dispatch]);
-
   //const [openModalDetails, setOpenModalDetails] = useState<boolean>(false);
   const handleOpenDetails = () => {
-
+    dispatch(setClientInfo({ id, customer }));
     history.push(`/main/`);
   };
 

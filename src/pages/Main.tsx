@@ -5,8 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
 import { logout } from "../redux/authSlice";
-import { activeCard, clientInfo, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
-import { getClientInfo, getClientInfoData } from "../redux/adminSlice";
+import { activeCard, getClientInfoData, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Cards } from "../components/Cards";
 import { DialogLogOut } from "../components/DialogLogOut";
@@ -25,10 +24,11 @@ export const Main: FC = () => {
 
   useEffect(() => {
     dispatch(getData());
-    dispatch(getClientInfo());
   }, [dispatch]);
 
   const getBasicInfoData = useAppSelector(getClientInfoData);
+  console.log("getBasicInfoData", getBasicInfoData);
+
   const activeCardData = useAppSelector(activeCard);
   const completedСardsData = useAppSelector(completedСards);
 
@@ -65,7 +65,7 @@ export const Main: FC = () => {
         </Typography>
         <br />
         <Typography variant="h5" component="div">
-          Cотрудник: {getBasicInfoData}
+          Cотрудник: {getBasicInfoData.customer}
         </Typography>
       </Box>
 
