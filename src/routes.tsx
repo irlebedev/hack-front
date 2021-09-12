@@ -1,7 +1,7 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from "react-router-dom";
 
-import MainLayout from './layouts/main';
-import MainApp from './pages/Main';
+import MainLayout from "./layouts/main";
+import MainApp from "./pages/Main";
 
 // import Login from './pages/Login';
 // import Register from './pages/Register';
@@ -22,19 +22,19 @@ export default function Router() {
     // //   //   { path: '404', element: <NotFound /> },
     //     { path: '/', element: <Navigate to="/main" /> },
     // //   //   { path: '*', element: <Navigate to="/404" /> }
-    //   ] 
+    //   ]
     // },
     {
-      path: '/main',
+      path: "/main",
       element: <MainLayout />,
       children: [
-        { path: '/main/', element: <Navigate to="/main/app" /> },
-        { path: '/main/app', element: <MainApp /> },
+        { path: "/main/", element: <Navigate to="/main/app" /> },
+        { path: "/main/app", element: <MainApp /> },
         // { path: 'user', element: <User /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }
-      ]
+      ],
     },
-    // { path: '*', element: <Navigate to="/404" replace /> }
+    // { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }
