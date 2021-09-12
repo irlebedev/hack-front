@@ -30,8 +30,12 @@ const Container = styled(MuiContainer)`
 export const AuthForm: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const onLoginHandler = () => {
+  const onLoginHandler = (values: any) => {
+    console.log(values);
     dispatch(login());
+    if (values.email === "admin@mail.ru") {
+      return navigate("/main/admin");
+    }
     navigate("/main");
   };
   return (

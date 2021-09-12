@@ -1,4 +1,4 @@
-import { randomInteger, ICard } from '../';
+import { randomInteger, ICard } from "../";
 
 export const createMockCards: (count: number, isActive?: boolean) => ICard[] =
   (count: number, isActive?: boolean) =>
@@ -9,8 +9,8 @@ export const createMockCards: (count: number, isActive?: boolean) => ICard[] =
           cardList.concat({
             id: `${randomInteger(0, 50)}`,
             title: "Название ИПР",
-            dateEnd: new Date().toLocaleString("ru", { month: 'numeric', day: "numeric" }),
+            dateEnd: new Date().toLocaleString("ru", { month: "numeric", day: "numeric" }),
             descr: "Описание ИПР",
-            status: isActive ? 1 : randomInteger(0, 2)
+            status: isActive ? 2 : randomInteger(0, 1)
           }
           ), []);

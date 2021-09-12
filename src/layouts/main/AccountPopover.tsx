@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 
 // import { Icon } from '@iconify/react';
 // import homeFill from '@iconify/icons-eva/home-fill';
@@ -6,12 +6,20 @@ import { useRef, useState } from 'react';
 // import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 // import { Link as RouterLink } from 'react-router-dom';
 
-import { alpha, Avatar, Button, Divider, IconButton, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import {
+  alpha,
+  Avatar,
+  Button,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 
-import MenuPopover from '../../components/MenuPopover';
+import MenuPopover from "../../components/MenuPopover";
 
-import account from '../../_mocks_/account';
+import account from "../../_mocks_/account";
+import { useNavigate } from "react-router-dom";
 
 // const MENU_OPTIONS = [
 //   {
@@ -41,6 +49,7 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -52,16 +61,16 @@ export default function AccountPopover() {
           width: 44,
           height: 44,
           ...(open && {
-            '&:before': {
+            "&:before": {
               zIndex: 1,
               content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
-            }
-          })
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              position: "absolute",
+              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+            },
+          }),
         }}
       >
         <Avatar src={account.photoURL} alt="photoURL" />
@@ -77,7 +86,7 @@ export default function AccountPopover() {
           <Typography variant="subtitle1" noWrap>
             {account.displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {account.email}
           </Typography>
         </Box>
@@ -107,7 +116,12 @@ export default function AccountPopover() {
         ))} */}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button
+            fullWidth
+            color="inherit"
+            variant="outlined"
+            onClick={() => navigate("/auth")}
+          >
             Выйти
           </Button>
         </Box>

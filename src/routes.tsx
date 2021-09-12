@@ -1,6 +1,7 @@
 import { Navigate, useRoutes } from "react-router-dom";
 
 import MainLayout from "./layouts/main";
+import { AdminPage } from "./pages/AdminPage";
 import { AuthForm } from "./pages/AuthForm";
 import MainApp from "./pages/Main";
 import { PlanForm } from "./pages/PlanForm";
@@ -26,7 +27,7 @@ export default function Router() {
         { path: "/main/", element: <Navigate to="/main/app" /> },
         { path: "/main/app", element: <MainApp /> },
         { path: "/main/plan", element: <PlanForm /> },
-        // { path: 'user', element: <User /> },
+        { path: "/main/admin", element: <AdminPage /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }
       ],
