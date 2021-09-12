@@ -87,7 +87,6 @@ export const Main: FC = () => {
         </Box>
       </Box>
 
-
       <Box>
         <Grid container spacing={2} justifyContent="flex-start" flex-direction="column" sx={{ mb: 3 }}>
           <Grid item>
@@ -96,13 +95,16 @@ export const Main: FC = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" onClick={toggleModalLogOut} size="large">
+            <Button
+              variant="contained"
+              onClick={toggleModalLogOut}
+              size="large"
+            >
               Выйти из системы
             </Button>
           </Grid>
         </Grid>
       </Box>
-
       {isModalLogOut &&
         <DialogLogOut
           title="Вы действительно хотите выйти из системы?"
@@ -126,7 +128,7 @@ export const Main: FC = () => {
           toggleModal={toggleModalDeleteIDP}
           handlerConfirm={handleDeleteCard}
         />
-      }
+      )}
     </Container>
   );
 };

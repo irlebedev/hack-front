@@ -22,11 +22,9 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
 export const DialogLogOut: FC<iDialogLogOutProps> = (
   { title, isActive, toggleModal, handlerConfirm }: iDialogLogOutProps
 ) => {
-
   return (
     <div>
       <Dialog
@@ -51,5 +49,3 @@ export const DialogLogOut: FC<iDialogLogOutProps> = (
     </div>
   );
 }
-
-
