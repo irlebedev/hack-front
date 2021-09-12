@@ -1,41 +1,42 @@
-import React, { FC, useEffect } from "react";
-import { TableRow, TableCell, Chip, Button } from "@mui/material";
+import React, { FC } from "react";
+import {
+  TableRow,
+  TableCell,
+  Chip,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { IEmployees } from "../../api";
 import { useAppDispatch } from "../../redux/hooks";
 import { setClientInfo } from "../../redux/idpSlice";
-import { IEmployees } from "../../api/interfaces";
 
 interface ITableContent {
-  item: IEmployees;
+  item: IEmployees
 }
 
-export const TableContent: FC<ITableContent> = ({ item }: ITableContent) => {
+export const TableContent: FC<ITableContent> = (
+  { item }: ITableContent
+) => {
   const { id, date, customer, direction, status } = item;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   //const [openModalDetails, setOpenModalDetails] = useState<boolean>(false);
-  const handleOpenDetails = () => {
+  const handleOpenDetails = (event: any) => {
+    event.stopPropagation();
     dispatch(setClientInfo({ id, customer }));
     navigate(`/main/`);
   };
 
   return (
-    <TableRow
-      key={id}
-      onClick={handleOpenDetails}
-      sx={{ cursor: "pointer", ":hover": { backgroundColor: "#F1F2F4" } }}
-    >
+    <TableRow key={id} onClick={handleOpenDetails} sx={{ cursor: "pointer", ":hover": { backgroundColor: "#F1F2F4" } }}>
       <TableCell className="pl-3 fw-normal">{date}</TableCell>
       <TableCell>{customer}</TableCell>
       <TableCell>{direction}</TableCell>
       <TableCell>
         <Chip
-          label={
-            status === 2 ? "Завершено" : status === 1 ? "В процессе" : "Создано"
-          }
+          label={status === 2 ? "Завершено" : status === 1 ? "В процессе" : "Создано"}
           color={status === 2 ? "success" : status === 1 ? "warning" : "info"}
           size="small"
           sx={{ minWidth: "6rem" }}
@@ -45,10 +46,16 @@ export const TableContent: FC<ITableContent> = ({ item }: ITableContent) => {
         <Button variant="contained" size="small">
           Подтвердить
         </Button>
-        <Button variant="contained" size="small">
+        <Button
+          variant="contained"
+          size="small"
+        >
           Отклонить
         </Button>
-        <Button variant="contained" size="small">
+        <Button
+          variant="contained"
+          size="small"
+        >
           Удалить
         </Button>
         {/* {openModalDetails &&
@@ -61,5 +68,5 @@ export const TableContent: FC<ITableContent> = ({ item }: ITableContent) => {
         } */}
       </TableCell>
     </TableRow>
-  );
-};
+  )
+}

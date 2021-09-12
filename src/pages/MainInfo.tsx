@@ -1,14 +1,20 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Box, Button, Container as MuiContainer, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { getIsAuthorized, logout } from "../redux/authSlice";
+import { logout } from "../redux/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-
-import { createMockCards, ICard } from "../api";
-import { Cards } from "../components/Cards/Cards";
-import { DialogLogOut } from "../components/DialogLogOut/DialogLogOut";
+import { Cards } from "../components/Cards";
+import { DialogLogOut } from "../components/DialogLogOut";
+import { ModalInfo } from "../components/ModalInfo";
+import {
+  activeCard,
+  getClientInfoData,
+  completedСards,
+  deleteActiveCard,
+  getData
+} from "../redux/idpSlice";
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -18,14 +24,29 @@ const Container = styled(MuiContainer)`
 `;
 
 export const MainInfo: FC = () => {
-  const isAuthorized = useAppSelector(getIsAuthorized);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [isModalLogOut, setModalLogOut] = useState<boolean>(false);
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
 
-  const onCreateHandler = () => {
-    navigate("/main/plan");
+  const getBasicInfoData = useAppSelector(getClientInfoData);
+
+  const activeCardData = useAppSelector(activeCard);
+  const completedСardsData = useAppSelector(completedСards);
+
+  const [isModalLogOut, setModalLogOut] = useState<boolean>(false);
+  const [isModalCreateIDP, setModalCreateIDP] = useState<boolean>(false);
+  const [isModalDeleteIDP, setModalDeleteIDP] = useState<boolean>(false);
+
+  const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
+  const toggleModalCreateIDP = () => setModalCreateIDP(!isModalCreateIDP);
+  const toggleModalDeleteIDP = () => setModalDeleteIDP(!isModalDeleteIDP);
+
+  const handleDeleteCard = () => {
+    toggleModalDeleteIDP();
+    dispatch(deleteActiveCard());
   };
 
   const onLogoutHandler = () => {
@@ -33,46 +54,51 @@ export const MainInfo: FC = () => {
     navigate("/auth");
   };
 
-  const toggleModalLogOut = () => setModalLogOut(!isModalLogOut);
+  const onCreateHandler = () => {
+    if (activeCardData.length === 0) {
+      navigate("/main/plan");
+    };
 
-  const mockActiveCard: ICard[] = createMockCards(1, true);
-  const mockCards: ICard[] = createMockCards(6);
+    toggleModalCreateIDP();
+  };
 
   return (
     <Container>
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{ mt: 4, flex: "0 0 auto" }}>
         <Typography variant="h5" component="div">
-          Привет, Игорь Петров.
-          <br />
-          Добро пожаловать!
+          Добро пожаловать в систему ИПР!
+        </Typography>
+        <br />
+        <Typography variant="h5" component="div">
+          Cотрудник: {getBasicInfoData.customer}
         </Typography>
       </Box>
 
-      <Box>
-        <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-          Активный ИПР:
-        </Typography>
-        <Cards data={mockActiveCard} />
-      </Box>
+      <Box sx={{ flex: "1 0 auto", display: "flex", flexDirection: "column", gap: "2rem" }}>
+        {!!activeCardData.length &&
+          <Box>
+            <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
+              Активный ИПР:
+            </Typography>
+            <Cards
+              data={activeCardData}
+              toggleModalDeleteIDP={toggleModalDeleteIDP}
+            />
+          </Box>
+        }
 
-      <Box>
-        <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-          Завершенные ИПР:
-        </Typography>
-        <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
-          <Cards data={mockCards} />
+        <Box>
+          <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
+            Завершенные ИПР:
+          </Typography>
+          <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", }}>
+            <Cards data={completedСardsData} />
+          </Box>
         </Box>
       </Box>
 
-      <Box>
-        <Box>{isAuthorized ? "authorized" : "not authorized"}</Box>
-        <Grid
-          container
-          spacing={2}
-          justifyContent="flex-start"
-          flex-direction="column"
-          sx={{ mb: 3 }}
-        >
+      <Box sx={{ flex: "0 0 auto" }}>
+        <Grid container spacing={2} justifyContent="flex-start" flex-direction="column" sx={{ mb: 3 }}>
           <Grid item>
             <Button variant="contained" onClick={onCreateHandler} size="large">
               Создать ИПР
@@ -89,13 +115,31 @@ export const MainInfo: FC = () => {
           </Grid>
         </Grid>
       </Box>
-      {isModalLogOut && (
+      {isModalLogOut &&
         <DialogLogOut
+          title="Вы действительно хотите выйти из системы?"
           isActive={isModalLogOut}
-          toggleModalLogOut={toggleModalLogOut}
-          onLogoutHandler={onLogoutHandler}
+          toggleModal={toggleModalLogOut}
+          handlerConfirm={onLogoutHandler}
         />
-      )}
+      }
+
+      {isModalCreateIDP &&
+        <ModalInfo
+          title="На текущий момент ИПР уже создан"
+          isActive={isModalCreateIDP}
+          toggleModal={toggleModalCreateIDP}
+        />
+      }
+
+      {isModalDeleteIDP &&
+        <DialogLogOut
+          title="Вы действительно хотите удалить ИПР?"
+          isActive={isModalDeleteIDP}
+          toggleModal={toggleModalDeleteIDP}
+          handlerConfirm={handleDeleteCard}
+        />
+      }
     </Container>
   );
 };

@@ -1,12 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import {
   Table,
   TableRow,
   TableHead,
   TableBody,
   TableCell,
-  Chip,
-  Button,
 } from "@mui/material";
 import { IEmployees } from "../../api";
 import TableContent from "../TableContent";

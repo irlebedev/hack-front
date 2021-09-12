@@ -4,7 +4,7 @@ import {
   Button,
   Container as MuiContainer,
   Grid,
-  Typography,
+  Typography
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import { logout } from "../redux/authSlice";
 import { getEmployees, getIsEmployeesList } from "../redux/adminSlice";
 import Widget from "../components/Widget";
 import TableComponent from "../components/Table";
+import { DialogLogOut } from "../components/DialogLogOut";
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -51,7 +52,11 @@ export const AdminPage: FC = () => {
       <Box sx={{ flex: "1 0 auto" }}>
         {!!employeesListData.length && (
           <Grid item xs={12}>
-            <Widget title="Список сотрудников" upperTitle noBodyPadding>
+            <Widget
+              title="Список сотрудников"
+              upperTitle
+              noBodyPadding
+            >
               <TableComponent data={employeesListData} />
             </Widget>
           </Grid>
@@ -77,7 +82,18 @@ export const AdminPage: FC = () => {
           </Grid>
         </Grid>
       </Box>
-    </Container>
+
+      {
+        isModalLogOut &&
+        <DialogLogOut
+          title="Вы действительно хотите выйти из системы?"
+          isActive={isModalLogOut}
+          toggleModal={toggleModalLogOut}
+          handlerConfirm={onLogoutHandler}
+        />
+      }
+
+    </Container >
   );
 };
 

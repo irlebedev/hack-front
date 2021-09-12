@@ -6,11 +6,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 
-interface iDialogLogOutProps {
+interface IModalCreateProps {
   title: string,
   isActive: boolean,
-  toggleModal: () => void
-  handlerConfirm: () => void
+  toggleModal: () => void,
 }
 
 const Transition = forwardRef(function Transition(
@@ -22,9 +21,11 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const DialogLogOut: FC<iDialogLogOutProps> = (
-  { title, isActive, toggleModal, handlerConfirm }: iDialogLogOutProps
+
+export const ModalInfo: FC<IModalCreateProps> = (
+  { title, isActive, toggleModal }: IModalCreateProps
 ) => {
+
   return (
     <div>
       <Dialog
@@ -37,15 +38,15 @@ export const DialogLogOut: FC<iDialogLogOutProps> = (
         <DialogTitle id="responsive-dialog-title">
           {title}
         </DialogTitle>
+
         <DialogActions>
           <Button autoFocus onClick={toggleModal}>
-            Нет
-          </Button>
-          <Button onClick={handlerConfirm} autoFocus>
-            Да
+            Закрыть
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
+
+ModalInfo.displayName = "ModalInfo";

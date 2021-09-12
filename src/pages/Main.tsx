@@ -5,8 +5,7 @@ import { MainInfo } from "./MainInfo";
 
 export default function MainApp() {
   return (
-    //@ts-ignore
-    <Page title="Main">
+    <Page title="IDP System">
       <Container maxWidth="xl">
         <MainInfo />
       </Container>

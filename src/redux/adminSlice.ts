@@ -1,16 +1,11 @@
-import { createMockEmployees } from "./../api/mockData/mockEmployees";
+import { createMockEmployees } from './../api/mockData/mockEmployees';
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../redux/store";
 import { IEmployees } from "../api";
 
-export interface IBasicInfo {
-  id: string;
-  fullname: string;
-}
-
 export interface AdminState {
-  employeesList: IEmployees[];
-  idp: {};
+  employeesList: IEmployees[],
+  idp: {},
 }
 
 const initialState: AdminState = {
@@ -34,8 +29,9 @@ export const adminSlice = createSlice({
   },
 });
 
-export const getIsEmployeesList = ({ admin: { employeesList } }: any) =>
-  employeesList;
+export const getIsEmployeesList = (
+  {admin : {employeesList}}: RootState
+) => employeesList;
 
 export const { getEmployees, approveIDP, cancelIDP } = adminSlice.actions;
 

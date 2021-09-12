@@ -85,10 +85,10 @@ export const PlanForm: React.FC = () => {
                 <DatePicker
                   label="Дата начала"
                   value={startDate}
-                  onChange={(newValue) => {
+                  onChange={(newValue: any) => {
                     dispatch(setStartDate(newValue?.valueOf() ?? null));
                   }}
-                  renderInput={(params) => (
+                  renderInput={(params: any) => (
                     <TextField
                       {...params}
                       sx={{
@@ -101,10 +101,10 @@ export const PlanForm: React.FC = () => {
                 <DatePicker
                   label="Дата окончания"
                   value={endDate}
-                  onChange={(newValue) => {
+                  onChange={(newValue: any) => {
                     dispatch(setEndDate(newValue?.valueOf() ?? null));
                   }}
-                  renderInput={(params) => (
+                  renderInput={(params: any) => (
                     <TextField
                       {...params}
                       sx={{
