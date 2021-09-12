@@ -1,10 +1,15 @@
 import React, { FC, useState, useEffect } from "react";
-import { Box, Button, Container as MuiContainer, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container as MuiContainer,
+  Grid,
+  Typography
+} from "@mui/material";
 import { styled } from "@mui/system";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logout } from "../redux/authSlice";
-import { AppRoutes } from "../App";
 import { getEmployees, getIsEmployeesList } from "../redux/adminSlice";
 import Widget from "../components/Widget";
 import TableComponent from "../components/Table";
@@ -20,7 +25,7 @@ const Container = styled(MuiContainer)`
 
 export const AdminPage: FC = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -34,7 +39,7 @@ export const AdminPage: FC = () => {
 
   const onLogoutHandler = () => {
     dispatch(logout());
-    history.push(AppRoutes.AUTH);
+    navigate("/auth");
   };
 
   return (
@@ -49,7 +54,11 @@ export const AdminPage: FC = () => {
       <Box sx={{ flex: "1 0 auto" }}>
         {!!employeesListData.length && (
           <Grid item xs={12}>
-            <Widget title="Список сотрудников" upperTitle noBodyPadding>
+            <Widget
+              title="Список сотрудников"
+              upperTitle
+              noBodyPadding
+            >
               <TableComponent data={employeesListData} />
             </Widget>
           </Grid>
@@ -57,7 +66,13 @@ export const AdminPage: FC = () => {
       </Box>
 
       <Box sx={{ flex: "0 0 auto" }}>
-        <Grid container spacing={2} justifyContent="flex-start" flex-direction="column" sx={{ mb: 3 }}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent="flex-start"
+          flex-direction="column"
+          sx={{ mb: 3 }}
+        >
           <Grid item>
             <Button
               variant="contained"

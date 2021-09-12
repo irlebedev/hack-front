@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -18,8 +18,8 @@ export const Cards: FC<ICardsProps> = (
   { data, toggleModalDeleteIDP }: ICardsProps
 ) => {
 
-  const history = useHistory();
-  const onEditHandler = () => history.push(`/edit/22`);
+  const navigate = useNavigate();
+  const onEditHandler = () => navigate(`/main/plan`);
 
   const renderCards =
     data.map((

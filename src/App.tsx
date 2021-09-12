@@ -1,23 +1,14 @@
-import { Switch, Route, Redirect } from "react-router-dom";
-import { Auth, AdminPage, Plan, Main } from "./pages";
+import Router from './routes';
 
-export enum AppRoutes {
-  MAIN = "/main",
-  AUTH = "/auth",
-  ADMIN = "/admin",
-  PLAN = "/plan",
-  EDIT_IPR = "/edit/:id"
-}
+import ThemeConfig from './theme';
 
-export const App: React.FC = () => {
+import ScrollToTop from './components/ScrollToTop';
+
+export default function App() {
   return (
-    <Switch>
-      <Route exact path={AppRoutes.MAIN} component={Main} />
-      <Route exact path={AppRoutes.AUTH} component={Auth} />
-      <Route exact path={AppRoutes.PLAN} component={Plan} />
-      <Route exact path={AppRoutes.EDIT_IPR} component={Plan} />
-      <Route exact path={AppRoutes.ADMIN} component={AdminPage} />
-      <Redirect to={AppRoutes.AUTH} />
-    </Switch>
+    <ThemeConfig>
+      <ScrollToTop />
+      <Router />
+    </ThemeConfig>
   );
-};
+}

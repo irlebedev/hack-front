@@ -3,11 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../redux/store";
 import { IEmployees } from "../api";
 
-export interface IBasicInfo {
-  id: string,
-  fullname: string,
-}
-
 export interface AdminState {
   employeesList: IEmployees[],
   idp: {},

@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import {
   TableRow,
   TableCell,
   Chip,
   Button,
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IEmployees } from "../../api";
 import { useAppDispatch } from "../../redux/hooks";
 import { setClientInfo } from "../../redux/idpSlice";
@@ -20,12 +20,13 @@ export const TableContent: FC<ITableContent> = (
   const { id, date, customer, direction, status } = item;
 
   const dispatch = useAppDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   //const [openModalDetails, setOpenModalDetails] = useState<boolean>(false);
-  const handleOpenDetails = () => {
+  const handleOpenDetails = (event: any) => {
+    event.stopPropagation();
     dispatch(setClientInfo({ id, customer }));
-    history.push(`/main/`);
+    navigate(`/main/`);
   };
 
   return (
