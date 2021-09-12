@@ -6,46 +6,73 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-//import { Chip } from '@mui/material';
+import { Chip } from "@mui/material";
 import { ICard } from "../../api";
 
 interface ICardsProps {
-  data: ICard[];
+  data: ICard[],
+  toggleModalDeleteIDP?: () => void
 }
 
-export const Cards: FC<ICardsProps> = ({ data }: ICardsProps) => {
+export const Cards: FC<ICardsProps> = (
+  { data, toggleModalDeleteIDP }: ICardsProps
+) => {
+
   const history = useHistory();
   const onEditHandler = () => history.push(`/edit/22`);
 
-  const renderCards = data.map(
-    (item: ICard): JSX.Element => (
-      <Box sx={{ width: 300 }}>
+  const renderCards =
+    data.map((
+      { title, descr, dateEnd, status }: ICard, index: number
+    ): JSX.Element => (
+      <Box sx={{ width: "22rem" }} key={index}>
         <Card variant="outlined">
           <CardContent>
             <Typography
-              sx={{ fontSize: 14 }}
+              sx={{ fontSize: 14, display: "flex", justifyContent: "space-between" }}
               color="text.secondary"
               gutterBottom
             >
               ИПР (индивидуальный план развития)
+              <Chip
+                label={status === 2 ? "Завершено" : status === 1 ? "В процессе" : "Создано"}
+                color={status === 2 ? "success" : status === 1 ? "warning" : "info"}
+                size="small"
+              />
             </Typography>
             <Typography variant="h5" component="div">
-              {item.title}
+              {title}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Срок окончания: {item.dateEnd}
+              Срок окончания: {dateEnd}
             </Typography>
-            <Typography variant="body2">{item.descr}</Typography>
+            <Typography variant="body2">
+              {descr}
+            </Typography>
           </CardContent>
-          <CardActions flex-direction="space-between">
-            <Button size="small" onClick={onEditHandler}>
-              Редактировать
-            </Button>
-          </CardActions>
+          {status !== 2 &&
+            <CardActions flex-direction="space-between">
+              <Button
+                size="small"
+                onClick={onEditHandler}
+              >
+                Редактировать
+              </Button>
+              <Button
+                size="small"
+                onClick={toggleModalDeleteIDP}
+              >
+                Удалить
+              </Button>
+            </CardActions>
+          }
         </Card>
-      </Box>
-    )
-  );
+      </Box >
+    ));
 
-  return <React.Fragment>{renderCards}</React.Fragment>;
+  return (
+    <>
+      {renderCards}
+    </>
+  );
 };
