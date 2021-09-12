@@ -4,7 +4,7 @@ import { styled } from "@mui/system";
 import { useHistory } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
-import { getIsAuthorized, logout } from "../redux/authSlice";
+import { logout } from "../redux/authSlice";
 import { activeCard, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Cards } from "../components/Cards";
@@ -26,7 +26,6 @@ export const Main: FC = () => {
     dispatch(getData());
   }, [dispatch]);
 
-  const isAuthorized = useAppSelector(getIsAuthorized);
   const activeCardData = useAppSelector(activeCard);
   const completedСardsData = useAppSelector(completedСards);
 
@@ -128,7 +127,7 @@ export const Main: FC = () => {
           toggleModal={toggleModalDeleteIDP}
           handlerConfirm={handleDeleteCard}
         />
-      )}
+      }
     </Container>
   );
 };
