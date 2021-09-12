@@ -22,7 +22,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const getIsAuthorized = (state: RootState) => state.auth.isAuthorized;
+export const getIsAuthorized = ({ auth: { isAuthorized } }: RootState) =>
+  isAuthorized;
 
 export const { login, logout } = authSlice.actions;
 
