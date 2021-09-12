@@ -7,8 +7,9 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 
 interface IModalCreateProps {
+  title: string,
   isActive: boolean,
-  toggleModal: () => void
+  toggleModal: () => void,
 }
 
 const Transition = forwardRef(function Transition(
@@ -21,8 +22,8 @@ const Transition = forwardRef(function Transition(
 });
 
 
-export const ModalCreateIDP: FC<IModalCreateProps> = (
-  { isActive, toggleModal }: IModalCreateProps
+export const ModalInfo: FC<IModalCreateProps> = (
+  { title, isActive, toggleModal }: IModalCreateProps
 ) => {
 
   return (
@@ -35,8 +36,9 @@ export const ModalCreateIDP: FC<IModalCreateProps> = (
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="responsive-dialog-title">
-          На текущий момент ИПР уже создан
+          {title}
         </DialogTitle>
+
         <DialogActions>
           <Button autoFocus onClick={toggleModal}>
             Закрыть
@@ -47,4 +49,4 @@ export const ModalCreateIDP: FC<IModalCreateProps> = (
   );
 }
 
-
+ModalInfo.displayName = "ModalInfo";

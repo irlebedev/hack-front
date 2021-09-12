@@ -1,15 +1,16 @@
 import React, { FC, useState, useEffect } from "react";
 import { Box, Button, Container as MuiContainer, Grid } from "@mui/material";
 import { styled } from "@mui/system";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { AppRoutes } from "../App";
 import { logout } from "../redux/authSlice";
-import { activeCard, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
+import { activeCard, clientInfo, completedСards, deleteActiveCard, getData } from "../redux/idpSlice";
+import { getClientInfo, getClientInfoData } from "../redux/adminSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Cards } from "../components/Cards";
 import { DialogLogOut } from "../components/DialogLogOut";
-import { ModalCreateIDP } from "../components/ModalCreateIDP";
+import { ModalInfo } from "../components/ModalInfo";
 
 const Container = styled(MuiContainer)`
   height: 100vh;
@@ -24,8 +25,10 @@ export const Main: FC = () => {
 
   useEffect(() => {
     dispatch(getData());
+    dispatch(getClientInfo());
   }, [dispatch]);
 
+  const getBasicInfoData = useAppSelector(getClientInfoData);
   const activeCardData = useAppSelector(activeCard);
   const completedСardsData = useAppSelector(completedСards);
 
@@ -44,7 +47,6 @@ export const Main: FC = () => {
 
   const onLogoutHandler = () => {
     dispatch(logout());
-    history.push(AppRoutes.AUTH);
   };
 
   const onCreateHandler = () => {
@@ -57,36 +59,40 @@ export const Main: FC = () => {
 
   return (
     <Container>
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{ mt: 4, flex: "0 0 auto" }}>
         <Typography variant="h5" component="div">
-          Привет, Игорь Петров.
-          <br />
-          Добро пожаловать!
+          Добро пожаловать в систему ИПР!
+        </Typography>
+        <br />
+        <Typography variant="h5" component="div">
+          Cотрудник: {getBasicInfoData}
         </Typography>
       </Box>
 
-      {!!activeCardData.length &&
+      <Box sx={{ flex: "1 0 auto", display: "flex", flexDirection: "column", gap: "2rem" }}>
+        {!!activeCardData.length &&
+          <Box>
+            <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
+              Активный ИПР:
+            </Typography>
+            <Cards
+              data={activeCardData}
+              toggleModalDeleteIDP={toggleModalDeleteIDP}
+            />
+          </Box>
+        }
+
         <Box>
           <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-            Активный ИПР:
+            Завершенные ИПР:
           </Typography>
-          <Cards
-            data={activeCardData}
-            toggleModalDeleteIDP={toggleModalDeleteIDP}
-          />
-        </Box>
-      }
-
-      <Box>
-        <Typography variant="h5" component="div" sx={{ mb: 1.5 }}>
-          Завершенные ИПР:
-        </Typography>
-        <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", }}>
-          <Cards data={completedСardsData} />
+          <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", }}>
+            <Cards data={completedСardsData} />
+          </Box>
         </Box>
       </Box>
 
-      <Box>
+      <Box sx={{ flex: "0 0 auto" }}>
         <Grid container spacing={2} justifyContent="flex-start" flex-direction="column" sx={{ mb: 3 }}>
           <Grid item>
             <Button variant="contained" onClick={onCreateHandler} size="large">
@@ -114,7 +120,8 @@ export const Main: FC = () => {
       }
 
       {isModalCreateIDP &&
-        <ModalCreateIDP
+        <ModalInfo
+          title="На текущий момент ИПР уже создан"
           isActive={isModalCreateIDP}
           toggleModal={toggleModalCreateIDP}
         />
